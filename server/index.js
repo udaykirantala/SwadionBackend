@@ -1,0 +1,46 @@
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import Category from "./routes/SwadionCategory.routes.js"
+import Countries from "./routes/SwadionCountries.routes.js"
+import Recipes from "./routes/SwadionRecipes.routes.js"
+import cors from "cors";
+dotenv.config();
+
+const app = express();
+
+const port = process.env.PORT ||9502;
+const mongourl = process.env.MONGO_URI
+
+mongoose.set("strictQuery",false);
+
+
+const connectDB = async()=>{
+    try {
+        await mongoose.connect(mongourl)
+        console.log(`Swadion Data Base is Connected....!`);
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}))
+
+//Middelwares
+app.use(express.json())
+app.use("/app/swadion/category",Category);
+app.use("/app/swadion/countries",Countries);
+app.use("/app/swadion/recipes",Recipes);
+
+
+
+connectDB().then(()=>{
+    app.listen(port,()=>{
+        console.log(`Swadion Server is Running in Port ${port}`);
+    })
+})
+
