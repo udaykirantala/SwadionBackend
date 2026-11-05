@@ -14,6 +14,25 @@ const mongourl = process.env.MONGO_URI
 
 mongoose.set("strictQuery",false);
 
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}))
+
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "OK",
+        message: "Swadion backend is running"
+    });
+});
+
+
+//Middelwares
+app.use(express.json())
+app.use("/app/swadion/category",Category);
+app.use("/app/swadion/countries",Countries);
+app.use("/app/swadion/recipes",Recipes);    
+
 
 const connectDB = async()=>{
     try {
@@ -21,22 +40,9 @@ const connectDB = async()=>{
         console.log(`Swadion Data Base is Connected....!`);
         
     } catch (error) {
-        console.log(error);
+        console.log("Database connection error:",error);
     }
 }
-
-app.use(cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-}))
-
-//Middelwares
-app.use(express.json())
-app.use("/app/swadion/category",Category);
-app.use("/app/swadion/countries",Countries);
-app.use("/app/swadion/recipes",Recipes);
-
-
 
 connectDB().then(()=>{
     app.listen(port,()=>{

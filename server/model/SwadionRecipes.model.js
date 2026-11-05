@@ -73,6 +73,10 @@
             type: Boolean,
             required: true
         },
+        isTrending:{
+            type:Boolean,
+            default:false
+        },
         createdAt: {
             type: Date,
             default:Date.now,

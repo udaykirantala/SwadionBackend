@@ -23,7 +23,8 @@ export const CreateRecipes = async (req, res, next) => {
         instructions,
         tags,
         isVegetarian,
-        isVegan
+        isVegan,
+        isTrending
     } = req.body
 
     try {
@@ -54,7 +55,8 @@ export const CreateRecipes = async (req, res, next) => {
             instructions,
             tags,
             isVegetarian,
-            isVegan
+            isVegan,
+            isTrending
         })
 
         await data.save();
