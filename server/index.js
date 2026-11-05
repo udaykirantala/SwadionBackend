@@ -9,15 +9,33 @@ dotenv.config();
 
 const app = express();
 
-const port = process.env.PORT ||9502;
+const port = process.env.PORT || 9502;
 const mongourl = process.env.MONGO_URI
 
-mongoose.set("strictQuery",false);
+mongoose.set("strictQuery", false);
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://68cda18b.swadion.pages.dev",
+    "https://swadion.com",
+    "https://www.swadion.com"
+];
+
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
-}))
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.use(express.json())
+
 
 app.get("/health", (req, res) => {
     res.status(200).json({
@@ -28,24 +46,23 @@ app.get("/health", (req, res) => {
 
 
 //Middelwares
-app.use(express.json())
-app.use("/app/swadion/category",Category);
-app.use("/app/swadion/countries",Countries);
-app.use("/app/swadion/recipes",Recipes);    
+app.use("/app/swadion/category", Category);
+app.use("/app/swadion/countries", Countries);
+app.use("/app/swadion/recipes", Recipes);
 
 
-const connectDB = async()=>{
+const connectDB = async () => {
     try {
         await mongoose.connect(mongourl)
         console.log(`Swadion Data Base is Connected....!`);
-        
+
     } catch (error) {
-        console.log("Database connection error:",error);
+        console.log("Database connection error:", error);
     }
 }
 
-connectDB().then(()=>{
-    app.listen(port,()=>{
+connectDB().then(() => {
+    app.listen(port, () => {
         console.log(`Swadion Server is Running in Port ${port}`);
     })
 })
