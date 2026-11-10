@@ -16,7 +16,7 @@ mongoose.set("strictQuery", false);
 
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://f156f31d.swadion.pages.dev",
+    "https://fde47c0d.swadion.pages.dev",
     "https://swadion.com",
     "https://www.swadion.com"
 ];
