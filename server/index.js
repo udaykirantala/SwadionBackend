@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import Category from "./routes/SwadionCategory.routes.js"
 import Countries from "./routes/SwadionCountries.routes.js"
 import Recipes from "./routes/SwadionRecipes.routes.js"
+import authRoutes from "./routes/auth.routes.js";
 import cors from "cors";
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.get("/health", (req, res) => {
 
 
 //Middelwares
+app.use("/app/swadion/auth",authRoutes)
 app.use("/app/swadion/category", Category);
 app.use("/app/swadion/countries", Countries);
 app.use("/app/swadion/recipes", Recipes);
