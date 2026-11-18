@@ -266,10 +266,10 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid email or password" })
         }
         if (!user.isActive) {
-            return res.status(403).json({ success: flase, message: "Your account is disabled" })
+            return res.status(403).json({ success: false, message: "Your account is disabled" })
         }
         if (!user.isEmailVerified) {
-            return res.status(403).josn({ success: flase, message: "Please verify your email before logging in" })
+            return res.status(403).josn({ success: false, message: "Please verify your email before logging in" })
         }
         const isPasswordValid = await user.comparePassword(password);
         if (!isPasswordValid) {
